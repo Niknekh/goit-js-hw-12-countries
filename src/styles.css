@@ -1,128 +1,72 @@
-/* Main styles */
+* {
+  padding: 0px;
 
-html {
+  margin: 0px;
   box-sizing: border-box;
 }
-
-*,
-*::after,
-*::before {
-  box-sizing: inherit;
-}
-
 body {
-  background-color: mintcream;
+  background-image: url(http://mapoftheworld.ru/karta-mira/konturnaya/konturnaya-karta-mira-bez-granic-gosudarstv.gif);
+  background-position: center;
+  background-size: 120%;
+  background-position-y: -200px;
 }
-
-h1,
-ul,
-li {
-  margin: 0;
-  padding: 0;
-}
-
 .wrapper {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 25px;
-  width: 900px;
-  height: 800px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
-
 .container {
+  width: 400px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 120px;
 }
-
-.input {
-  display: block;
-  margin-left: 250px;
-  margin-right: auto;
-  margin-bottom: 20px;
-  padding: 10px;
-  width: 200px;
-  height: 30px;
-
-  color: rgb(75, 75, 75);
-  font-weight: 700;
-
-  border: 1px solid grey;
+.country-search {
+  margin-top: 100px;
+  width: 100%;
+  border: 2px solid black;
   border-radius: 5px;
-}
-
-.input:hover,
-.input:focus {
-  outline: none;
-  border-width: 2px;
-}
-
-.list {
-  list-style: none;
-}
-
-.country-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* margin-left: 150px;
-  margin-right: auto; */
-
+  height: 25px;
   font-size: 20px;
+  font-weight: 500;
+}
+.country-list {
+  background-color: white;
+  padding-left: 20px;
+}
+.pnotify {
+  background-color: red;
+  width: 400px;
+  border-radius: 7px;
+  font-size: 20px;
+  opacity: 0.8;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
-/* Countries list */
-
-.list-countries {
-  padding-left: 30px;
-  margin-left: 240px;
-  margin-right: auto;
-}
-
-.list-countries-item:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-/* Country info */
-
-.country {
+.country-info-title {
+  margin-left: 700px;
+  padding-top: 50px;
+  font-size: 40px;
   width: 100%;
 }
-
-.country-title {
-  margin-bottom: 30px;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
+.country-info-img {
+  max-width: 400px;
+  position: absolute;
+  right: 300px;
+  top: 300px;
 }
-
-.country-list-info {
-  margin-right: 30px;
+.country-info-container {
+  position: absolute;
+  left: 450px;
+  top: 320px;
+  font-size: 25px;
 }
-
-.country-list-item:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.country-text {
+.country-info-span {
   font-weight: 700;
 }
-
-.country-sublist {
-  padding-left: 35px;
-  list-style-type: disc;
-}
-
-.sublist-item {
-  margin-top: 10px;
-}
-
-.sublist-item:not(:first-child) {
-  margin-top: 5px;
-}
-
-/* PNotify styles */
-[data-pnotify] .pnotify-pre-line {
-  font-weight: 600;
-  color: rgb(0, 0, 0);
+.country-info-language {
+  margin-left: 20px;
 }

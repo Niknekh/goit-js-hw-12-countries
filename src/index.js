@@ -1,85 +1,66 @@
-import debounce from 'lodash.debounce';
-import temaplateList from './templates/list-countries.hbs';
-import countryInfo from './templates/country-info.hbs';
 import fetchCountries from './js/fetchCountries.js';
-import { showMessage, showError } from './js/notification.js';
-import './styles.css';
+import './styles.css'
+import debounce from 'lodash.debounce';
+import countryList from './templates/list-countries.hbs'
+import { alert, notice, info, success, error } from '@pnotify/core';
+import countryInfo from './templates/country-info.hbs'
+
+
+
+
+
 
 const refs = {
-  mainBox: document.querySelector('.js-container'),
-  input: document.querySelector('.js-input'),
-  listCountries: null,
-  country: null,
-};
-
-refs.input.addEventListener('input', debounce(fetchHandler, 500));
-
-function fetchHandler() {
-  if (this.value === '') {
+  input: document.querySelector('.country-search'),
+  container: document.querySelector('.container'),
+  countryUl: document.querySelector('.country-list'),
+  countryInformContainer: document.querySelector('.results-container'),
+  regExp: /[a-zA-Z]/g
+}
+refs.input.addEventListener('input', debounce((e) => {
+ 
+  if (e.target.value === '') {
+    refs.countryUl.innerHTML = '';
     return;
   }
+            
+if(refs.regExp.test(e.target.value)){
+  fetchCountries(e.target.value.trim())
+    .then(response => response.json())
+    .then(data => {
+      if (data.length > 10) {
+        alert({
+          text: 'Слишком много совпадений! Пожалуйта, сделайте запрос специфичнее.',
+          type: 'info',
+          addClass: 'pnotify',
+          animation: 'fade',
+          delay: 3000
+        });
+        refs.countryUl.innerHTML = '';
+                refs.countryInformContainer.innerHTML = '';
 
-  const queryResult = fetchCountries(this.value.trim());
 
-  queryResult
-    .then(data => data.json())
-    .then(countries => dataСheck(countries))
-    .catch(() => showError());
+      } else if (data.length >= 2 && data.length <= 10) {
+        refs.countryUl.innerHTML = countryList(data);
+                refs.countryInformContainer.innerHTML = '';
+
+
+      } else if (data.length === 1) {
+        refs.countryInformContainer.innerHTML = countryInfo(data);
+                            refs.countryUl.innerHTML = '';
+
+      } else {
+        alert({
+          addClass: 'pnotify',
+          text: 'Неверное имя!'
+        })
+                    refs.countryUl.innerHTML = '';
+        refs.countryInformContainer.innerHTML = '';
+      }
+    })
+} else {
+  return;
+
 }
-
-function dataСheck(countries) {
-  const result = isValid(countries);
-
-  if (!result) {
-    showError();
-    return;
-  }
-
-  const quantity = countries.length;
-
-  if (quantity > 10) {
-    showMessage();
-  } else if (quantity >= 2 && quantity <= 10) {
-    createlListMarkup(countries);
-  } else if (quantity === 1) {
-    createMarkup(countries);
-  }
-}
-
-function createlListMarkup(countries) {
-  const markup = temaplateList(countries);
-
-  if (refs.listCountries !== null) {
-    refs.listCountries.remove();
-    refs.listCountries = null;
-  } else if (refs.country !== null) {
-    refs.country.remove();
-    refs.country = null;
-  }
-
-  refs.mainBox.insertAdjacentHTML('beforeend', markup);
-  refs.listCountries = document.querySelector('.container .js-list');
-}
-
-function createMarkup(country) {
-  const markup = countryInfo(country);
-
-  if (refs.country !== null) {
-    refs.country.remove();
-    refs.country = null;
-  } else if (refs.listCountries !== null) {
-    refs.listCountries.remove();
-    refs.listCountries = null;
-  }
-
-  refs.mainBox.insertAdjacentHTML('beforeend', markup);
-  refs.country = document.querySelector('.container .js-country');
-}
-
-function isValid(value) {
-  if (Array.isArray(value)) {
-    return true;
-  }
-
-  return false;
-}
+}, 500)
+)
